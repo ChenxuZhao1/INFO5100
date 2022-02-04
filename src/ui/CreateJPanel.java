@@ -8,6 +8,27 @@ import javax.swing.JOptionPane;
 import model.Car;
 import model.ServiceRecords;
 
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.regex.Pattern;
+import javax.swing.InputVerifier;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+
+
 /**
  *
  * @author 85251
@@ -18,7 +39,7 @@ public class CreateJPanel extends javax.swing.JPanel {
      * Creates new form CreateJPanel
      */
     ServiceRecords records;
-    
+    String imagePath;
     public CreateJPanel(ServiceRecords records) {
         initComponents();
         this.records = records;
@@ -65,8 +86,8 @@ public class CreateJPanel extends javax.swing.JPanel {
         txtAddress = new javax.swing.JTextField();
         txtRecords = new javax.swing.JTextField();
         txtWarYear = new javax.swing.JTextField();
-        txtPhoto = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
+        btnUpload = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("宋体", 1, 24)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -104,6 +125,12 @@ public class CreateJPanel extends javax.swing.JPanel {
 
         lblPhoto.setText("Photo:");
 
+        txtBrand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBrandActionPerformed(evt);
+            }
+        });
+
         txtRecords.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtRecordsActionPerformed(evt);
@@ -120,6 +147,13 @@ public class CreateJPanel extends javax.swing.JPanel {
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnUpload.setText("Select a photo to upload");
+        btnUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadActionPerformed(evt);
             }
         });
 
@@ -176,31 +210,36 @@ public class CreateJPanel extends javax.swing.JPanel {
                         .addGap(148, 148, 148)))
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtModel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                    .addComponent(txtBrand, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtColor, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtWarYear, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtPhoto, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtRecords, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtSSN, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtDriver, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtTelephone, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtOwnerName, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtLicense, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtYear, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtSeatsNumber)
-                    .addComponent(txtEngine)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(17, 17, 17)))
-                .addGap(125, 125, 125))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtWarYear, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtRecords, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtAddress, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtSSN, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtDriver, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTelephone, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtOwnerName, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtLicense, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtSeatsNumber)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(17, 17, 17))
+                            .addComponent(btnUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(125, 125, 125))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtEngine, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(txtYear, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtColor, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtModel, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBrand, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(62, 62, 62)
                 .addComponent(lblTitle)
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -263,12 +302,12 @@ public class CreateJPanel extends javax.swing.JPanel {
                     .addComponent(lblWarrantyYear)
                     .addComponent(txtWarYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPhoto)
-                    .addComponent(txtPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnUpload))
                 .addGap(18, 18, 18)
                 .addComponent(btnSave)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -281,25 +320,128 @@ public class CreateJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtWarYearActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+
+        String brand;
+        if(Pattern.matches("\\w+",txtBrand.getText()))
+            brand = txtBrand.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Brand must be entered.");
+            return;
+        }
         
-        String brand = txtBrand.getText();
-        String model = txtModel.getText();
-        String color = txtColor.getText();
-        String year = txtYear.getText();
-        String engine = txtEngine.getText();
-        String seats = txtSeatsNumber.getText();
-        String license = txtLicense.getText();
-        String name = txtOwnerName.getText();
-        String telephone = txtTelephone.getText();
-        String email = txtEmail.getText();
-        String driver = txtDriver.getText();
-        String ssn = txtSSN.getText();
-        String address = txtAddress.getText();
-        String rrecords = txtRecords.getText();
-        String warranty = txtWarYear.getText();
-        String photo = txtPhoto.getText();
+        String model;
+        if(Pattern.matches("\\w+",txtModel.getText()))
+            model = txtModel.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Model must be entered.");
+            return;
+        }
+       
+        String color;
+        if(Pattern.matches("\\w+",txtColor.getText()))
+            color = txtColor.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Color must be entered.");
+            return;
+        }
+
+        String year;
+        if(Pattern.matches("\\d{4}",txtYear.getText()))
+            year = txtYear.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Year must be entered with a 4-digit number.");
+            return;
+        }
+
+        String engine;
+        if(Pattern.matches("\\w+",txtEngine.getText()))
+            engine = txtEngine.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Engine No. must be entered.");
+            return;
+        }
         
-//        Car c = records.addNewCar();
+
+        String seats;
+        if(Pattern.matches("\\d{1,2}",txtSeatsNumber.getText()))
+            seats = txtSeatsNumber.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Seats number must be entered with a valid number.");
+            return;
+        }
+        
+        String license;
+        if(Pattern.matches("[0-9]{4}[A-Z]{2}",txtLicense.getText()))
+            license = txtLicense.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "License plates must be entered with valid numbers and chars.");
+            return;
+        }
+        
+        String name;
+        if(Pattern.matches("\\w+",txtOwnerName.getText()))
+            name = txtOwnerName.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Name must be entered.");
+            return;
+        }
+        
+        String telephone;
+        if(Pattern.matches("^\\(*[0-9]{3}\\)*\\s*[0-9]{3}-*[0-9]{4}$",txtTelephone.getText()))
+            telephone = txtTelephone.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Telephone must be entered with a valid number.");
+            return;
+        }
+        
+        String email;
+        if(Pattern.matches("\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?",txtEmail.getText()))
+            email = txtEmail.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "email must be entered.");
+            return;
+        }
+        
+        String driver;
+        if(Pattern.matches("\\w+",txtDriver.getText()))
+            driver = txtDriver.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Driver License must be entered.");
+            return;
+        }
+        
+        String ssn;
+        if(Pattern.matches("[0-9]{3}-*[0-9]{3}-*[0-9]{4}",txtSSN.getText()))
+            ssn = txtSSN.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "SSN must be entered.");
+            return;
+        }
+        
+        String address;
+        if(Pattern.matches("\\w+",txtAddress.getText()))
+            address = txtAddress.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Address must be entered.");
+            return;
+        }
+                
+        String rrecords;
+        if(Pattern.matches("\\w+",txtRecords.getText()))
+            rrecords = txtRecords.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Records must be entered.");
+            return;
+        }
+        
+        String warranty;
+        if(Pattern.matches("[0-9]{1,2}",txtWarYear.getText()))
+            warranty = txtWarYear.getText();
+        else{
+            JOptionPane.showMessageDialog(this, "Warranty year must be entered.");
+            return;
+        }
+        
         Car c = new Car();
         c.setBrand(brand);
         c.setModel(model);
@@ -316,7 +458,7 @@ public class CreateJPanel extends javax.swing.JPanel {
         c.setOwnerAddress(address);
         c.setServiceRecord(rrecords);
         c.setWarrantyYear(warranty);
-        c.setPhoto(photo);
+        c.setPhoto(imagePath);
         records.addNewCar(c);
 
         JOptionPane.showMessageDialog(this, "New Car added.");
@@ -336,20 +478,29 @@ public class CreateJPanel extends javax.swing.JPanel {
         txtAddress.setText("");
         txtRecords.setText("");
         txtWarYear.setText("");
-        txtPhoto.setText("");
- 
-        
-        
-        
-        
-        
-        
-        
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
+        // TODO add your handling code here:
+         JFrame jf = new JFrame();
+         JFileChooser fileChooser = new JFileChooser();
+         fileChooser.setCurrentDirectory(new File("."));
+         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+         fileChooser.setMultiSelectionEnabled(false);
+         fileChooser.setFileFilter(new FileNameExtensionFilter("image(*.jpg, *.png)", "jpg", "png"));
+         fileChooser.showOpenDialog(jf);
+         imagePath = fileChooser.getSelectedFile().getAbsolutePath();
+    }//GEN-LAST:event_btnUploadActionPerformed
+
+    private void txtBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBrandActionPerformed
+
+    }//GEN-LAST:event_txtBrandActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnUpload;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblEngineNo;
@@ -376,7 +527,6 @@ public class CreateJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtLicense;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtOwnerName;
-    private javax.swing.JTextField txtPhoto;
     private javax.swing.JTextField txtRecords;
     private javax.swing.JTextField txtSSN;
     private javax.swing.JTextField txtSeatsNumber;

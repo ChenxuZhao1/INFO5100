@@ -160,6 +160,4 @@ public class Car {
         this.photo = photo;
     }
     
-    
-    
 }
